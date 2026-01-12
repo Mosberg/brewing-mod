@@ -1,0 +1,7 @@
+{
+  "pack": {
+    "description": "Tooling-only pack for Spyglass - Brewing Mod",
+    "min_format": 75,
+    "max_format": 75
+  }
+}

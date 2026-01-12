@@ -1,0 +1,997 @@
+{
+  "schema_version": 1,
+  "namespace": "brewing",
+  "description": "Data-driven beverage catalog for the Brewing mod.",
+  "alcohol_types": [
+    {
+      "id": "absinthe",
+      "display_name": "Absinthe",
+      "abv_range_pct": [45, 75],
+      "base_method": "maceration_distillation"
+    },
+    {
+      "id": "ale",
+      "display_name": "Ale",
+      "abv_range_pct": [4, 10],
+      "base_method": "fermentation"
+    },
+    {
+      "id": "beer",
+      "display_name": "Beer",
+      "abv_range_pct": [3, 12],
+      "base_method": "fermentation"
+    },
+    {
+      "id": "brandy",
+      "display_name": "Brandy",
+      "abv_range_pct": [35, 60],
+      "base_method": "distillation"
+    },
+    {
+      "id": "cider",
+      "display_name": "Cider",
+      "abv_range_pct": [3, 10],
+      "base_method": "fermentation"
+    },
+    {
+      "id": "gin",
+      "display_name": "Gin",
+      "abv_range_pct": [35, 50],
+      "base_method": "maceration_distillation"
+    },
+    {
+      "id": "lager",
+      "display_name": "Lager",
+      "abv_range_pct": [4, 8],
+      "base_method": "fermentation"
+    },
+    {
+      "id": "mead",
+      "display_name": "Mead",
+      "abv_range_pct": [6, 18],
+      "base_method": "fermentation"
+    },
+    {
+      "id": "rum",
+      "display_name": "Rum",
+      "abv_range_pct": [35, 55],
+      "base_method": "distillation"
+    },
+    {
+      "id": "stout",
+      "display_name": "Stout",
+      "abv_range_pct": [4, 12],
+      "base_method": "fermentation"
+    },
+    {
+      "id": "vodka",
+      "display_name": "Vodka",
+      "abv_range_pct": [35, 50],
+      "base_method": "distillation_filtration"
+    },
+    {
+      "id": "whisky",
+      "display_name": "Whisky",
+      "abv_range_pct": [35, 55],
+      "base_method": "distillation"
+    },
+    {
+      "id": "wine",
+      "display_name": "Wine",
+      "abv_range_pct": [8, 16],
+      "base_method": "fermentation"
+    }
+  ],
+  "containers": [
+    {
+      "id": "aluminum_can",
+      "display_name": "Aluminum Can",
+      "capacity_ml": 330,
+      "allowed_alcohol_types": ["beer", "lager", "ale", "stout", "cider"],
+      "properties": {
+        "sealed": true,
+        "reusable": false,
+        "requires_cork": false
+      }
+    },
+    {
+      "id": "copper_keg",
+      "display_name": "Copper Keg",
+      "capacity_ml": 30000,
+      "allowed_alcohol_types": ["beer", "lager", "ale", "stout", "cider"],
+      "properties": {
+        "sealed": true,
+        "reusable": true,
+        "pressurizable": true
+      }
+    },
+    {
+      "id": "glass_bottle",
+      "display_name": "Glass Bottle",
+      "capacity_ml": 500,
+      "allowed_alcohol_types": [
+        "beer",
+        "lager",
+        "ale",
+        "stout",
+        "mead",
+        "cider",
+        "wine"
+      ],
+      "properties": {
+        "sealed": true,
+        "reusable": true,
+        "requires_cork": true
+      }
+    },
+    {
+      "id": "glass_flask",
+      "display_name": "Glass Flask",
+      "capacity_ml": 250,
+      "allowed_alcohol_types": [
+        "whisky",
+        "rum",
+        "gin",
+        "vodka",
+        "brandy",
+        "absinthe"
+      ],
+      "properties": {
+        "sealed": true,
+        "reusable": true,
+        "requires_cork": false
+      }
+    },
+    {
+      "id": "oak_barrel",
+      "display_name": "Oak Barrel",
+      "capacity_ml": 50000,
+      "allowed_alcohol_types": ["whisky", "rum", "brandy", "wine", "mead"],
+      "properties": {
+        "sealed": false,
+        "reusable": true,
+        "aging_supported": true,
+        "oak_only": true
+      }
+    },
+    {
+      "id": "pressurized_steel_keg",
+      "display_name": "Pressurized Steel Keg",
+      "capacity_ml": 30000,
+      "allowed_alcohol_types": ["beer", "lager", "ale", "stout", "cider"],
+      "properties": {
+        "sealed": true,
+        "reusable": true,
+        "pressurizable": true
+      }
+    },
+    {
+      "id": "wine_bottle",
+      "display_name": "Wine Bottle",
+      "capacity_ml": 750,
+      "allowed_alcohol_types": ["wine", "mead"],
+      "properties": {
+        "sealed": true,
+        "reusable": true,
+        "requires_cork": true
+      }
+    },
+    {
+      "id": "wooden_barrel",
+      "display_name": "Wooden Barrel",
+      "capacity_ml": 50000,
+      "allowed_alcohol_types": ["beer", "ale", "stout", "mead", "wine"],
+      "properties": {
+        "sealed": false,
+        "reusable": true,
+        "aging_supported": true
+      }
+    }
+  ],
+  "ingredients": [
+    {
+      "id": "anise",
+      "display_name": "Anise",
+      "kind": "botanical"
+    },
+    {
+      "id": "apple",
+      "display_name": "Apple",
+      "kind": "fruit"
+    },
+    {
+      "id": "barley",
+      "display_name": "Barley",
+      "kind": "grain"
+    },
+    {
+      "id": "charcoal",
+      "display_name": "Charcoal",
+      "kind": "filter"
+    },
+    {
+      "id": "corn",
+      "display_name": "Corn",
+      "kind": "grain"
+    },
+    {
+      "id": "fennel",
+      "display_name": "Fennel",
+      "kind": "botanical"
+    },
+    {
+      "id": "grape",
+      "display_name": "Grape",
+      "kind": "fruit"
+    },
+    {
+      "id": "honey",
+      "display_name": "Honey",
+      "kind": "sweetener"
+    },
+    {
+      "id": "hops",
+      "display_name": "Hops",
+      "kind": "botanical"
+    },
+    {
+      "id": "juniper",
+      "display_name": "Juniper Berries",
+      "kind": "botanical"
+    },
+    {
+      "id": "molasses",
+      "display_name": "Molasses",
+      "kind": "sweetener"
+    },
+    {
+      "id": "oak_chips",
+      "display_name": "Oak Chips",
+      "kind": "aging"
+    },
+    {
+      "id": "rye",
+      "display_name": "Rye",
+      "kind": "grain"
+    },
+    {
+      "id": "sugarcane",
+      "display_name": "Sugarcane",
+      "kind": "sweetener"
+    },
+    {
+      "id": "water",
+      "display_name": "Water",
+      "kind": "fluid"
+    },
+    {
+      "id": "wheat",
+      "display_name": "Wheat",
+      "kind": "grain"
+    },
+    {
+      "id": "wormwood",
+      "display_name": "Wormwood",
+      "kind": "botanical"
+    },
+    {
+      "id": "yeast",
+      "display_name": "Yeast",
+      "kind": "culture"
+    }
+  ],
+  "methods": [
+    {
+      "id": "aging",
+      "display_name": "Aging",
+      "summary": "Develop wood-derived flavors over time.",
+      "time_ticks": 48000,
+      "requires": ["aging_barrel"]
+    },
+    {
+      "id": "boiling",
+      "display_name": "Boiling",
+      "summary": "Sterilize and add bittering/aroma botanicals (like hops).",
+      "time_ticks": 1200,
+      "requires": ["brew_kettle"]
+    },
+    {
+      "id": "conditioning",
+      "display_name": "Conditioning",
+      "summary": "Clarify and optionally carbonate.",
+      "time_ticks": 12000,
+      "requires": ["carbonation_rig"]
+    },
+    {
+      "id": "distillation",
+      "display_name": "Distillation",
+      "summary": "Concentrate alcohol from a fermented wash.",
+      "time_ticks": 6000,
+      "requires": ["copper_distillery"]
+    },
+    {
+      "id": "fermentation",
+      "display_name": "Fermentation",
+      "summary": "Convert sugars into alcohol and CO2 using yeast.",
+      "time_ticks": 24000,
+      "requires": ["oak_fermenter"]
+    },
+    {
+      "id": "filtration",
+      "display_name": "Filtration",
+      "summary": "Polish flavor and remove impurities.",
+      "time_ticks": 2400,
+      "requires": ["charcoal_filter"]
+    },
+    {
+      "id": "maceration",
+      "display_name": "Maceration",
+      "summary": "Steep botanicals in spirit for extraction.",
+      "time_ticks": 6000,
+      "requires": ["botanical_basket"]
+    },
+    {
+      "id": "mashing",
+      "display_name": "Mashing",
+      "summary": "Convert grain starches into fermentable sugars.",
+      "time_ticks": 2400,
+      "requires": ["brew_kettle"]
+    }
+  ],
+  "equipment": [
+    {
+      "id": "aging_barrel",
+      "display_name": "Aging Barrel",
+      "roles": ["aging"],
+      "power": {
+        "type": "none"
+      }
+    },
+    {
+      "id": "botanical_basket",
+      "display_name": "Botanical Basket",
+      "roles": ["maceration"],
+      "power": {
+        "type": "none"
+      }
+    },
+    {
+      "id": "brew_kettle",
+      "display_name": "Brew Kettle",
+      "roles": ["mashing", "boiling"],
+      "power": {
+        "type": "fuel",
+        "cost_per_batch": 2
+      }
+    },
+    {
+      "id": "carbonation_rig",
+      "display_name": "Carbonation Rig",
+      "roles": ["conditioning"],
+      "power": {
+        "type": "mechanical",
+        "cost_per_batch": 1
+      }
+    },
+    {
+      "id": "charcoal_filter",
+      "display_name": "Charcoal Filter",
+      "roles": ["filtration"],
+      "power": {
+        "type": "none"
+      }
+    },
+    {
+      "id": "copper_distillery",
+      "display_name": "Copper Distillery",
+      "roles": ["distillation"],
+      "power": {
+        "type": "fuel",
+        "cost_per_batch": 4
+      }
+    },
+    {
+      "id": "oak_fermenter",
+      "display_name": "Oak Fermenter",
+      "roles": ["fermentation"],
+      "power": {
+        "type": "none"
+      }
+    }
+  ],
+  "beverages": [
+    {
+      "id": "brewing:absinthe/absinthe",
+      "display_name": "Absinthe",
+      "alcohol_type": "absinthe",
+      "target_abv_pct": 65,
+      "container_defaults": ["glass_flask"],
+      "ingredient_profile": [
+        {
+          "ingredient": "rye",
+          "amount": 4,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        },
+        {
+          "ingredient": "wormwood",
+          "amount": 2,
+          "unit": "item"
+        },
+        {
+          "ingredient": "anise",
+          "amount": 1,
+          "unit": "item"
+        },
+        {
+          "ingredient": "fennel",
+          "amount": 1,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter",
+          "intermediate": "fermented_wash"
+        },
+        {
+          "method": "distillation",
+          "equipment": "copper_distillery",
+          "intermediate": "raw_spirit"
+        },
+        {
+          "method": "maceration",
+          "equipment": "botanical_basket"
+        }
+      ],
+      "tags": ["spirit", "absinthe", "distilled", "botanical"]
+    },
+    {
+      "id": "brewing:ale/basic_ale",
+      "display_name": "Basic Ale",
+      "alcohol_type": "ale",
+      "target_abv_pct": 5,
+      "container_defaults": [
+        "glass_bottle",
+        "copper_keg",
+        "pressurized_steel_keg",
+        "aluminum_can"
+      ],
+      "ingredient_profile": [
+        {
+          "ingredient": "water",
+          "amount": 1000,
+          "unit": "mB"
+        },
+        {
+          "ingredient": "barley",
+          "amount": 3,
+          "unit": "item"
+        },
+        {
+          "ingredient": "hops",
+          "amount": 1,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "mashing",
+          "equipment": "brew_kettle"
+        },
+        {
+          "method": "boiling",
+          "equipment": "brew_kettle"
+        },
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter"
+        },
+        {
+          "method": "conditioning",
+          "equipment": "carbonation_rig"
+        }
+      ],
+      "tags": ["beer", "ale", "fermented", "grain"]
+    },
+    {
+      "id": "brewing:beer/basic_beer",
+      "display_name": "Basic Beer",
+      "alcohol_type": "beer",
+      "target_abv_pct": 5,
+      "container_defaults": [
+        "glass_bottle",
+        "copper_keg",
+        "pressurized_steel_keg",
+        "aluminum_can"
+      ],
+      "ingredient_profile": [
+        {
+          "ingredient": "water",
+          "amount": 1000,
+          "unit": "mB"
+        },
+        {
+          "ingredient": "barley",
+          "amount": 3,
+          "unit": "item"
+        },
+        {
+          "ingredient": "hops",
+          "amount": 1,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "mashing",
+          "equipment": "brew_kettle"
+        },
+        {
+          "method": "boiling",
+          "equipment": "brew_kettle"
+        },
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter"
+        },
+        {
+          "method": "conditioning",
+          "equipment": "carbonation_rig"
+        }
+      ],
+      "tags": ["beer", "fermented", "grain"]
+    },
+    {
+      "id": "brewing:brandy/brandy",
+      "display_name": "Brandy",
+      "alcohol_type": "brandy",
+      "target_abv_pct": 40,
+      "container_defaults": ["glass_flask", "oak_barrel"],
+      "ingredient_profile": [
+        {
+          "ingredient": "grape",
+          "amount": 6,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter",
+          "intermediate": "fermented_wash"
+        },
+        {
+          "method": "distillation",
+          "equipment": "copper_distillery"
+        }
+      ],
+      "tags": ["spirit", "brandy", "distilled"]
+    },
+    {
+      "id": "brewing:cider/apple_cider",
+      "display_name": "Apple Cider",
+      "alcohol_type": "cider",
+      "target_abv_pct": 6,
+      "container_defaults": ["glass_bottle", "aluminum_can", "copper_keg"],
+      "ingredient_profile": [
+        {
+          "ingredient": "apple",
+          "amount": 6,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter"
+        },
+        {
+          "method": "conditioning",
+          "equipment": "carbonation_rig"
+        }
+      ],
+      "tags": ["fermented", "fruit"]
+    },
+    {
+      "id": "brewing:gin/gin",
+      "display_name": "Gin",
+      "alcohol_type": "gin",
+      "target_abv_pct": 42,
+      "container_defaults": ["glass_flask"],
+      "ingredient_profile": [
+        {
+          "ingredient": "corn",
+          "amount": 4,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        },
+        {
+          "ingredient": "juniper",
+          "amount": 2,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter",
+          "intermediate": "fermented_wash"
+        },
+        {
+          "method": "distillation",
+          "equipment": "copper_distillery",
+          "intermediate": "raw_spirit"
+        },
+        {
+          "method": "maceration",
+          "equipment": "botanical_basket"
+        }
+      ],
+      "tags": ["spirit", "gin", "distilled", "botanical"]
+    },
+    {
+      "id": "brewing:lager/basic_lager",
+      "display_name": "Lager",
+      "alcohol_type": "lager",
+      "target_abv_pct": 5,
+      "container_defaults": [
+        "glass_bottle",
+        "copper_keg",
+        "pressurized_steel_keg",
+        "aluminum_can"
+      ],
+      "ingredient_profile": [
+        {
+          "ingredient": "water",
+          "amount": 1000,
+          "unit": "mB"
+        },
+        {
+          "ingredient": "barley",
+          "amount": 3,
+          "unit": "item"
+        },
+        {
+          "ingredient": "hops",
+          "amount": 1,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "mashing",
+          "equipment": "brew_kettle"
+        },
+        {
+          "method": "boiling",
+          "equipment": "brew_kettle"
+        },
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter"
+        },
+        {
+          "method": "conditioning",
+          "equipment": "carbonation_rig"
+        }
+      ],
+      "tags": ["beer", "lager", "fermented", "grain"]
+    },
+    {
+      "id": "brewing:mead/oak_aged_mead",
+      "display_name": "Oak-Aged Mead",
+      "alcohol_type": "mead",
+      "target_abv_pct": 12,
+      "container_defaults": ["wine_bottle", "wooden_barrel", "oak_barrel"],
+      "ingredient_profile": [
+        {
+          "ingredient": "water",
+          "amount": 1000,
+          "unit": "mB"
+        },
+        {
+          "ingredient": "honey",
+          "amount": 4,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        },
+        {
+          "ingredient": "oak_chips",
+          "amount": 1,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter"
+        },
+        {
+          "method": "aging",
+          "equipment": "aging_barrel"
+        }
+      ],
+      "tags": ["fermented", "honey", "aged"]
+    },
+    {
+      "id": "brewing:rum/rum",
+      "display_name": "Rum",
+      "alcohol_type": "rum",
+      "target_abv_pct": 40,
+      "container_defaults": ["glass_flask", "oak_barrel"],
+      "ingredient_profile": [
+        {
+          "ingredient": "sugarcane",
+          "amount": 6,
+          "unit": "item"
+        },
+        {
+          "ingredient": "molasses",
+          "amount": 2,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter",
+          "intermediate": "fermented_wash"
+        },
+        {
+          "method": "distillation",
+          "equipment": "copper_distillery"
+        }
+      ],
+      "tags": ["spirit", "rum", "distilled", "sweet"]
+    },
+    {
+      "id": "brewing:stout/stout_dark",
+      "display_name": "Dark Stout",
+      "alcohol_type": "stout",
+      "target_abv_pct": 7,
+      "container_defaults": [
+        "glass_bottle",
+        "copper_keg",
+        "pressurized_steel_keg"
+      ],
+      "ingredient_profile": [
+        {
+          "ingredient": "water",
+          "amount": 1000,
+          "unit": "mB"
+        },
+        {
+          "ingredient": "barley",
+          "amount": 4,
+          "unit": "item"
+        },
+        {
+          "ingredient": "hops",
+          "amount": 1,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "mashing",
+          "equipment": "brew_kettle"
+        },
+        {
+          "method": "boiling",
+          "equipment": "brew_kettle"
+        },
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter"
+        },
+        {
+          "method": "conditioning",
+          "equipment": "carbonation_rig"
+        }
+      ],
+      "tags": ["beer", "stout", "fermented", "grain"]
+    },
+    {
+      "id": "brewing:vodka/vodka_charcoal",
+      "display_name": "Charcoal Vodka",
+      "alcohol_type": "vodka",
+      "target_abv_pct": 40,
+      "container_defaults": ["glass_flask"],
+      "ingredient_profile": [
+        {
+          "ingredient": "wheat",
+          "amount": 4,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        },
+        {
+          "ingredient": "charcoal",
+          "amount": 1,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter",
+          "intermediate": "fermented_wash"
+        },
+        {
+          "method": "distillation",
+          "equipment": "copper_distillery",
+          "intermediate": "raw_spirit"
+        },
+        {
+          "method": "filtration",
+          "equipment": "charcoal_filter"
+        }
+      ],
+      "tags": ["spirit", "vodka", "distilled", "filtered"]
+    },
+    {
+      "id": "brewing:whisky/oak_aged_whisky",
+      "display_name": "Oak-Aged Whisky",
+      "alcohol_type": "whisky",
+      "target_abv_pct": 45,
+      "container_defaults": ["glass_flask", "oak_barrel"],
+      "ingredient_profile": [
+        {
+          "ingredient": "water",
+          "amount": 1000,
+          "unit": "mB"
+        },
+        {
+          "ingredient": "barley",
+          "amount": 5,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        },
+        {
+          "ingredient": "oak_chips",
+          "amount": 2,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter",
+          "intermediate": "fermented_wash"
+        },
+        {
+          "method": "distillation",
+          "equipment": "copper_distillery",
+          "intermediate": "raw_spirit"
+        },
+        {
+          "method": "aging",
+          "equipment": "aging_barrel"
+        }
+      ],
+      "tags": ["spirit", "whisky", "distilled", "aged"]
+    },
+    {
+      "id": "brewing:whisky/raw_whisky",
+      "display_name": "Raw Whisky",
+      "alcohol_type": "whisky",
+      "target_abv_pct": 45,
+      "container_defaults": ["glass_flask", "oak_barrel"],
+      "ingredient_profile": [
+        {
+          "ingredient": "water",
+          "amount": 1000,
+          "unit": "mB"
+        },
+        {
+          "ingredient": "barley",
+          "amount": 5,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter",
+          "intermediate": "fermented_wash"
+        },
+        {
+          "method": "distillation",
+          "equipment": "copper_distillery"
+        }
+      ],
+      "tags": ["spirit", "whisky", "distilled"]
+    },
+    {
+      "id": "brewing:wine/frost_aged_wine",
+      "display_name": "Frost-Aged Wine",
+      "alcohol_type": "wine",
+      "target_abv_pct": 13,
+      "container_defaults": ["wine_bottle", "wooden_barrel"],
+      "ingredient_profile": [
+        {
+          "ingredient": "grape",
+          "amount": 6,
+          "unit": "item"
+        },
+        {
+          "ingredient": "yeast",
+          "amount": 1,
+          "unit": "item"
+        }
+      ],
+      "process": [
+        {
+          "method": "fermentation",
+          "equipment": "oak_fermenter"
+        },
+        {
+          "method": "conditioning",
+          "equipment": "carbonation_rig"
+        }
+      ],
+      "tags": ["fermented", "fruit"]
+    }
+  ]
+}

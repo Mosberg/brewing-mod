@@ -1,0 +1,6 @@
+{
+  "id": "brew_kettle",
+  "display_name": "Brew Kettle",
+  "roles": ["mashing", "boiling"],
+  "power": { "type": "fuel", "cost_per_batch": 2 }
+}
