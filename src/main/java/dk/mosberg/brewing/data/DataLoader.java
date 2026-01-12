@@ -28,6 +28,7 @@ public class DataLoader {
     public static void initialize() {
         ResourceManagerHelper.get(ResourceType.SERVER_DATA)
                 .registerReloadListener(new SimpleSynchronousResourceReloadListener() {
+                    @SuppressWarnings("null")
                     @Override
                     public Identifier getFabricId() {
                         return Identifier.of(Brewing.MOD_ID, "data_loader");
@@ -82,6 +83,7 @@ public class DataLoader {
                     try (InputStream stream = resource.getInputStream();
                             InputStreamReader reader =
                                     new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+                        @SuppressWarnings("null")
                         Map<String, Object> json = GSON.fromJson(reader, Map.class);
                         String fileId =
                                 identifier.getPath().replace(path + "/", "").replace(".json", "");
@@ -105,6 +107,7 @@ public class DataLoader {
                     try (InputStream stream = resource.getInputStream();
                             InputStreamReader reader =
                                     new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+                        @SuppressWarnings("null")
                         Map<String, Object> json = GSON.fromJson(reader, Map.class);
                         String fileId = identifier.getPath()
                                 .replace("data/" + Brewing.MOD_ID + "/", "").replace(".json", "");
