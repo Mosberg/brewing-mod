@@ -15,10 +15,9 @@ These instructions are optimized for this repo’s current Gradle + Fabric Loom 
 
 This mod is **data-driven**: beverages, containers, equipment, and ingredients are defined in JSON under `src/main/resources/data/brewing/`, not hardcoded. The vision:
 
-1. **Master catalog**: `data/brewing/brewing.json` contains all alcohol types, beverages, containers, equipment, ingredients, and methods (998 lines of consolidated JSON).
-2. **Individual files**: Each entity also has its own file under subdirectories (`beverages/beer/beer.json`, `containers/aluminum_can.json`, etc.) for detailed definitions.
-3. **Runtime loading**: `DataLoader` (TODO stub) will parse these JSONs and populate managers (`BeverageManager`, `ContainerManager`, etc.).
-4. **Dynamic registration**: Once loaded, the data feeds into Fabric registries (`ModItems`, `ModBlocks`, etc.) to create actual game objects.
+1. **Individual files**: Each entity has its own file under subdirectories (`beverages/beer/beer.json`, `containers/aluminum_can.json`, etc.) with detailed definitions.
+2. **Runtime loading**: `DataLoader` (TODO stub) will parse these JSONs and populate managers (`BeverageManager`, `ContainerManager`, etc.).
+3. **Dynamic registration**: Once loaded, the data feeds into Fabric registries (`ModItems`, `ModBlocks`, etc.) to create actual game objects.
 
 **Current state (early development)**: The JSON schemas and directory structure are complete; the Java implementation is mostly TODO stubs. When implementing:
 
@@ -146,17 +145,15 @@ dk.mosberg.brewing/
 
 ### JSON data schema (authoritative definitions)
 
-All content lives under `src/main/resources/data/brewing/`:
+All content lives under `src/main/resources/data/brewing/` in individual files:
 
-- **Master catalog**: `brewing.json` (998 lines, all entities inline)
-- **Subdirectories** (one file per entity):
-  - `alcohol_types/*.json`: Base alcohol categories (absinthe, ale, beer, brandy, cider, gin, lager, mead, rum, stout, vodka, whisky, wine)
-  - `beverages/<type>/*.json`: Individual beverages (e.g., `beer/beer.json`, `whisky/oak_aged_whisky.json`)
-  - `containers/*.json`: Containers (aluminum_can, glass_bottle, oak_barrel, etc.)
-  - `equipment/*.json`: Brewing equipment (brew_kettle, copper_distillery, aging_barrel, etc.)
-  - `ingredients/*.json`: Ingredients (barley, hops, yeast, water, grape, honey, etc.)
-  - `methods/*.json`: Brewing methods (fermentation, distillation, aging, mashing, etc.)
-  - `tags/*.json`: Tag definitions for grouping
+- `alcohol_types/*.json`: Base alcohol categories (absinthe, ale, beer, brandy, cider, gin, lager, mead, rum, stout, vodka, whisky, wine)
+- `beverages/<type>/*.json`: Individual beverages (e.g., `beer/beer.json`, `whisky/oak_aged_whisky.json`)
+- `containers/*.json`: Containers (aluminum_can, glass_bottle, oak_barrel, etc.)
+- `equipment/*.json`: Brewing equipment (brew_kettle, copper_distillery, aging_barrel, etc.)
+- `ingredients/*.json`: Ingredients (barley, hops, yeast, water, grape, honey, etc.)
+- `methods/*.json`: Brewing methods (fermentation, distillation, aging, mashing, etc.)
+- `tags/*.json`: Tag definitions for grouping
 
 Example beverage schema (`beverages/beer/beer.json`):
 
@@ -179,8 +176,6 @@ Example beverage schema (`beverages/beer/beer.json`):
 }
 ```
 
-When adding content, update both `brewing.json` and the corresponding subdirectory file.
-
 ### Entrypoints
 
 - Common entrypoint: `dk.mosberg.brewing.Brewing` (`ModInitializer`) - minimal, needs data loading wired in
@@ -195,7 +190,7 @@ When implementing the data-driven system:
 
 1. **Phase 1: Data layer** (parse JSONs into Java objects)
 
-   - Implement `DataLoader` to read `brewing.json` and subdirectories
+   - Implement `DataLoader` to read JSON files from subdirectories
    - Implement data classes (`BeverageData`, `ContainerData`, etc.) as immutable records
    - Handle JSON validation and error reporting
 
@@ -264,7 +259,7 @@ If you change fluid behavior (tick rate, speed, sounds), keep both still and flo
 
 ### Add a new beverage/container/ingredient (data-first workflow)
 
-1. Add JSON to both `data/brewing/brewing.json` (master catalog) and `data/brewing/<type>/<name>.json` (individual file).
+1. Add JSON file to `data/brewing/<type>/<name>.json`.
 2. Implement corresponding data class in `dk.mosberg.brewing.data` if it doesn't exist.
 3. Update `DataLoader` to parse the new data type.
 4. Implement manager in `dk.mosberg.brewing.manager` to hold parsed data.
@@ -297,6 +292,6 @@ If you add generators, keep outputs in `src/main/generated/resources` (already c
 There are currently no `src/test/**` tests in this repo. Use `./gradlew build` and `./gradlew runClient` as smoke checks.
 If you introduce pure Java logic (e.g., recipe parsing, config validation), add unit tests under `src/test/java` using JUnit.
 
-## Remote index (authoritative references)
+## Remote references
 
-See `docs/remote-index.md` for a curated list of the exact Yarn/Fabric docs and upstream repos used by this project.
+See [docs/remote-index.md](docs/remote-index.md) for the exact Yarn/Fabric docs and upstream repos used by this project.
