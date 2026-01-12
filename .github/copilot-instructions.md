@@ -11,6 +11,22 @@ These instructions are optimized for this repo’s current Gradle + Fabric Loom 
 - Mappings: yarn 1.21.11+build.4
 - Mod id: `brewing` (see `dk.mosberg.brewing.Brewing#MOD_ID`)
 
+## Architecture overview (data-driven design)
+
+This mod is **data-driven**: beverages, containers, equipment, and ingredients are defined in JSON under `src/main/resources/data/brewing/`, not hardcoded. The vision:
+
+1. **Master catalog**: `data/brewing/brewing.json` contains all alcohol types, beverages, containers, equipment, ingredients, and methods (998 lines of consolidated JSON).
+2. **Individual files**: Each entity also has its own file under subdirectories (`beverages/beer/beer.json`, `containers/aluminum_can.json`, etc.) for detailed definitions.
+3. **Runtime loading**: `DataLoader` (TODO stub) will parse these JSONs and populate managers (`BeverageManager`, `ContainerManager`, etc.).
+4. **Dynamic registration**: Once loaded, the data feeds into Fabric registries (`ModItems`, `ModBlocks`, etc.) to create actual game objects.
+
+**Current state (early development)**: The JSON schemas and directory structure are complete; the Java implementation is mostly TODO stubs. When implementing:
+
+- Start with `DataLoader` to parse JSONs into data classes (`BeverageData`, `ContainerData`, etc.).
+- Populate managers in `dk.mosberg.brewing.manager` to hold parsed data.
+- Wire managers into `Brewing#onInitialize()` to ensure they're loaded before registration.
+- Dynamically register items/blocks from data (avoid hardcoding in `ModItems`/`ModBlocks`).
+
 ## Known 1.21.11 gotchas (runtime)
 
 - `Item.Settings` must have a registry key set _before_ constructing an `Item` (otherwise you can crash at runtime with “Item id not set”). In practice: create `Item.Settings` with `.registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(Brewing.MOD_ID, id)))`.
@@ -99,24 +115,115 @@ Data/tag conventions:
 
 When adding new content, always update both registration code and resource files.
 
-## Code architecture (what exists today)
+## Code architecture (current implementation state)
+
+### Package structure
+
+```
+dk.mosberg.brewing/
+├── Brewing.java              # ModInitializer entrypoint (minimal, TODO: wire up data loading)
+├── block/                    # Block implementations (TODO stubs)
+├── entity/                   # Block entities (TODO stubs)
+├── item/                     # Custom item classes (TODO stubs)
+├── data/                     # Immutable data classes parsed from JSON
+│   ├── DataLoader.java       # TODO: Parse brewing.json + subdirectories
+│   ├── BeverageData.java     # TODO: Beverage definition schema
+│   ├── ContainerData.java    # TODO: Container definition schema
+│   ├── EquipmentData.java    # TODO: Equipment definition schema
+│   └── ...                   # Other data classes
+├── manager/                  # Runtime registries for loaded data
+│   ├── BeverageManager.java  # TODO: Hold all parsed beverages
+│   ├── ContainerManager.java # TODO: Hold all parsed containers
+│   └── ...                   # Other managers
+└── registry/                 # Fabric registries (will be data-driven)
+    ├── ModItems.java         # TODO: Dynamically register items from managers
+    ├── ModBlocks.java        # TODO: Dynamically register blocks from managers
+    ├── ModBlockItems.java    # TODO: Block items
+    ├── ModEffects.java       # TODO: Status effects
+    ├── ModItemGroups.java    # TODO: Creative tabs
+    └── ModBlockEntities.java # TODO: Block entity types
+```
+
+### JSON data schema (authoritative definitions)
+
+All content lives under `src/main/resources/data/brewing/`:
+
+- **Master catalog**: `brewing.json` (998 lines, all entities inline)
+- **Subdirectories** (one file per entity):
+  - `alcohol_types/*.json`: Base alcohol categories (absinthe, ale, beer, brandy, cider, gin, lager, mead, rum, stout, vodka, whisky, wine)
+  - `beverages/<type>/*.json`: Individual beverages (e.g., `beer/beer.json`, `whisky/oak_aged_whisky.json`)
+  - `containers/*.json`: Containers (aluminum_can, glass_bottle, oak_barrel, etc.)
+  - `equipment/*.json`: Brewing equipment (brew_kettle, copper_distillery, aging_barrel, etc.)
+  - `ingredients/*.json`: Ingredients (barley, hops, yeast, water, grape, honey, etc.)
+  - `methods/*.json`: Brewing methods (fermentation, distillation, aging, mashing, etc.)
+  - `tags/*.json`: Tag definitions for grouping
+
+Example beverage schema (`beverages/beer/beer.json`):
+
+```json
+{
+  "id": "brewing:beer/basic_beer",
+  "display_name": "Basic Beer",
+  "alcohol_type": "beer",
+  "target_abv_pct": 5,
+  "container_defaults": ["glass_bottle", "copper_keg", "aluminum_can"],
+  "ingredient_profile": [
+    { "ingredient": "water", "amount": 1000, "unit": "mB" },
+    { "ingredient": "barley", "amount": 3, "unit": "item" }
+  ],
+  "process": [
+    { "method": "mashing", "equipment": "brew_kettle" },
+    { "method": "fermentation", "equipment": "oak_fermenter" }
+  ],
+  "tags": ["beer", "fermented", "grain"]
+}
+```
+
+When adding content, update both `brewing.json` and the corresponding subdirectory file.
 
 ### Entrypoints
 
-- Common entrypoint: `dk.mosberg.brewing.Brewing` (`ModInitializer`)
-- Client entrypoint: `dk.mosberg.brewing.client.BrewingClient` (`ClientModInitializer`)
-- Datagen entrypoint: `dk.mosberg.brewing.client.datagen.BrewingDataGenerator`
+- Common entrypoint: `dk.mosberg.brewing.Brewing` (`ModInitializer`) - minimal, needs data loading wired in
+- Client entrypoint: `dk.mosberg.brewing.client.BrewingClient` (`ClientModInitializer`) - empty stub
+- Datagen entrypoint: `dk.mosberg.brewing.client.datagen.BrewingDataGenerator` - empty stub
 
 If you add new registries/content, ensure it is actually initialized from `Brewing#onInitialize()` (either by calling `ModX.init()` methods or otherwise referencing the classes so their static initializers run).
 
-### Registries
+### Implementation roadmap (for AI agents)
 
-Registrations are centralized in `dk.mosberg.brewing.registry`:
+When implementing the data-driven system:
 
-- `ModItems`: aluminum cans (empty/water/alcohol)
-- `ModFluids`: alcohol still/flowing
-- `ModBlocks`: aluminum keg block + alcohol fluid block
-- `ModBlockEntities`: aluminum keg block entity type
+1. **Phase 1: Data layer** (parse JSONs into Java objects)
+
+   - Implement `DataLoader` to read `brewing.json` and subdirectories
+   - Implement data classes (`BeverageData`, `ContainerData`, etc.) as immutable records
+   - Handle JSON validation and error reporting
+
+2. **Phase 2: Managers** (hold parsed data at runtime)
+
+   - Implement managers to store and query loaded data
+   - Wire managers into `Brewing#onInitialize()` before registry phase
+
+3. **Phase 3: Dynamic registration** (create game objects from data)
+
+   - Update `ModItems`, `ModBlocks`, etc. to iterate over manager data
+   - Register items/blocks/effects dynamically (avoid hardcoding)
+   - Ensure registry keys are set properly (see "Known 1.21.11 gotchas")
+
+4. **Phase 4: Assets** (models/textures/translations)
+   - Generate or verify `assets/brewing/items/*.json` matches registered items
+   - Generate or verify `assets/brewing/models/item/*.json` models
+   - Add translations to `assets/brewing/lang/en_us.json`
+
+### Registries (future state)
+
+Registrations will be centralized in `dk.mosberg.brewing.registry` (currently TODO stubs):
+
+- `ModItems`: Will dynamically register items from beverage/container data
+- `ModBlocks`: Will dynamically register blocks from equipment data
+- `ModBlockEntities`: Block entity types for brewable containers
+- `ModEffects`: Custom status effects from beverage definitions
+- `ModItemGroups`: Creative tabs organization
 
 Conventions:
 
@@ -155,9 +262,19 @@ If you change fluid behavior (tick rate, speed, sounds), keep both still and flo
 
 ## Making changes (fast checklists)
 
-### Add a new item
+### Add a new beverage/container/ingredient (data-first workflow)
 
-1. Register it in `ModItems`.
+1. Add JSON to both `data/brewing/brewing.json` (master catalog) and `data/brewing/<type>/<name>.json` (individual file).
+2. Implement corresponding data class in `dk.mosberg.brewing.data` if it doesn't exist.
+3. Update `DataLoader` to parse the new data type.
+4. Implement manager in `dk.mosberg.brewing.manager` to hold parsed data.
+5. Update registries to dynamically create items/blocks from parsed data.
+6. Add assets: item descriptor, model, texture, and translation.
+7. Run `./gradlew runClient` to verify.
+
+### Add a new item (legacy/direct registration)
+
+1. Register it in `ModItems` (note: will be replaced by data-driven approach).
 2. Add `assets/brewing/items/<id>.json`.
 3. Add `assets/brewing/models/item/<id>.json`.
 4. Add a translation key in `assets/brewing/lang/en_us.json`.
