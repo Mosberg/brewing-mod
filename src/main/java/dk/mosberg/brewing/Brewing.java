@@ -2,6 +2,11 @@ package dk.mosberg.brewing;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import dk.mosberg.brewing.data.DataLoader;
+import dk.mosberg.brewing.registry.ModBlockItems;
+import dk.mosberg.brewing.registry.ModBlocks;
+import dk.mosberg.brewing.registry.ModItemGroups;
+import dk.mosberg.brewing.registry.ModItems;
 import net.fabricmc.api.ModInitializer;
 
 public class Brewing implements ModInitializer {
@@ -17,8 +22,25 @@ public class Brewing implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
-		// TODO: Main mod initialization code goes here
 
-		LOGGER.info("Brewing mod initialized!");
+		LOGGER.info("Initializing Brewing mod...");
+
+		// Phase 1: Initialize data loading system
+		DataLoader.initialize();
+		LOGGER.info("Data loader initialized");
+
+		// Phase 2: Register blocks (must happen before block items)
+		ModBlocks.register();
+
+		// Phase 3: Register items
+		ModItems.register();
+
+		// Phase 4: Register block items
+		ModBlockItems.register();
+
+		// Phase 5: Register item groups (creative tabs)
+		ModItemGroups.register();
+
+		LOGGER.info("Brewing mod initialization complete!");
 	}
 }
