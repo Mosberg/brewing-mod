@@ -3,8 +3,10 @@ package dk.mosberg.brewing;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import dk.mosberg.brewing.data.DataLoader;
+import dk.mosberg.brewing.registry.ModBlockEntities;
 import dk.mosberg.brewing.registry.ModBlockItems;
 import dk.mosberg.brewing.registry.ModBlocks;
+import dk.mosberg.brewing.registry.ModFluids;
 import dk.mosberg.brewing.registry.ModItemGroups;
 import dk.mosberg.brewing.registry.ModItems;
 import net.fabricmc.api.ModInitializer;
@@ -29,16 +31,22 @@ public class Brewing implements ModInitializer {
 		DataLoader.initialize();
 		LOGGER.info("Data loader initialized");
 
-		// Phase 2: Register blocks (must happen before block items)
+		// Phase 2: Register fluids
+		ModFluids.register();
+
+		// Phase 3: Register blocks (must happen before block items)
 		ModBlocks.register();
 
-		// Phase 3: Register items
+		// Phase 4: Register items
 		ModItems.register();
 
-		// Phase 4: Register block items
+		// Phase 5: Register block items
 		ModBlockItems.register();
 
-		// Phase 5: Register item groups (creative tabs)
+		// Phase 6: Register block entities
+		ModBlockEntities.register();
+
+		// Phase 7: Register item groups (creative tabs)
 		ModItemGroups.register();
 
 		LOGGER.info("Brewing mod initialization complete!");

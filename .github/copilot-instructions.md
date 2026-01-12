@@ -294,4 +294,4 @@ If you introduce pure Java logic (e.g., recipe parsing, config validation), add 
 
 ## Remote references
 
-See [docs/remote-index.md](docs/remote-index.md) for the exact Yarn/Fabric docs and upstream repos used by this project.
+See [docs/remote-index.md](../docs/remote-index.md) for the exact Yarn/Fabric docs and upstream repos used by this project.

@@ -27,17 +27,14 @@ public class ModItemGroups {
         Registry.register(Registries.ITEM_GROUP, BREWING_GROUP,
                 FabricItemGroup.builder()
                         .displayName(Text.translatable("itemGroup." + Brewing.MOD_ID + ".brewing"))
-                        .icon(() -> new ItemStack(ModItems.getItem("glass_bottle")))
+                        .icon(() -> new ItemStack(ModItems.getItemOrFallback()))
                         .entries((displayContext, entries) -> {
-                            // Add all containers
-                            ModItems.getAllItems().forEach((id, item) -> {
-                                entries.add(item);
-                            });
+                            // Add all items (containers, ingredients, beverages)
+                            ModItems.getAllItems().forEach((id, item) -> entries.add(item));
 
                             // Add all blocks as items
-                            ModBlockItems.getAllBlockItems().forEach((id, item) -> {
-                                entries.add(item);
-                            });
+                            ModBlockItems.getAllBlockItems()
+                                    .forEach((id, item) -> entries.add(item));
                         }).build());
 
         Brewing.LOGGER.info("Registered item groups");

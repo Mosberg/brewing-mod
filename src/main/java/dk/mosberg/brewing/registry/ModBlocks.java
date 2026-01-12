@@ -20,12 +20,16 @@ import net.minecraft.util.Identifier;
  */
 public class ModBlocks {
     private static final Map<String, Block> BLOCKS = new HashMap<>();
+    public static Block KEG_BLOCK;
 
     /**
      * Registers all blocks dynamically from equipment data.
      */
     public static void register() {
         Brewing.LOGGER.info("Registering blocks...");
+
+        // Static keg block (fluid-capable)
+        registerKeg();
 
         // Register equipment as blocks
         for (EquipmentData equipment : EquipmentManager.getInstance().getAllEquipment()) {
@@ -49,6 +53,18 @@ public class ModBlocks {
         Block block = new Block(settings);
         Registry.register(Registries.BLOCK, Identifier.of(Brewing.MOD_ID, id), block);
         BLOCKS.put(id, block);
+    }
+
+    private static void registerKeg() {
+        String id = "keg";
+        AbstractBlock.Settings settings = AbstractBlock.Settings.create()
+                .registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(Brewing.MOD_ID, id)))
+                .mapColor(MapColor.IRON_GRAY).strength(3.0f).sounds(BlockSoundGroup.METAL)
+                .nonOpaque();
+
+        KEG_BLOCK = Registry.register(Registries.BLOCK, Identifier.of(Brewing.MOD_ID, id),
+                new dk.mosberg.brewing.block.KegBlock(settings));
+        BLOCKS.put(id, KEG_BLOCK);
     }
 
     /**

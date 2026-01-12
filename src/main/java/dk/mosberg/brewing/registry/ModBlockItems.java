@@ -51,9 +51,6 @@ public class ModBlockItems {
         return BLOCK_ITEMS.get(id);
     }
 
-    /**
-     * Gets all registered block items.
-     */
     public static Map<String, BlockItem> getAllBlockItems() {
         return Map.copyOf(BLOCK_ITEMS);
     }
