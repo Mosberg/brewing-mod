@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mosberg.github.io/schemas/minecraft-java-blockstate-fabric-generated-schema.json",
+  "title": "Minecraft Java blockstates JSON (Fabric datagen generated assets/*/blockstates/*.json)",
+  "type": "object",
+
+  "fileMatch": [
+    "src/main/generated/assets/*/blockstates/*.json",
+    "**/src/main/generated/assets/*/blockstates/*.json",
+
+    "build/generated/**/assets/*/blockstates/*.json",
+    "**/build/generated/**/assets/*/blockstates/*.json"
+  ],
+
+  "anyOf": [{ "required": ["variants"] }, { "required": ["multipart"] }],
+
+  "properties": {
+    "variants": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/VariantValue" }
+    },
+    "multipart": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/MultipartEntry" }
+    }
+  },
+
+  "additionalProperties": true,
+
+  "$defs": {
+    "ResourceLocation": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^([a-z0-9_.-]+:)?[a-z0-9_./-]+$"
+    },
+
+    "ModelRef": {
+      "type": "object",
+      "required": ["model"],
+      "properties": {
+        "model": { "$ref": "#/$defs/ResourceLocation" },
+        "x": { "type": "integer", "enum": [0, 90, 180, 270] },
+        "y": { "type": "integer", "enum": [0, 90, 180, 270] },
+        "uvlock": { "type": "boolean" },
+        "weight": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": true
+    },
+
+    "VariantValue": {
+      "oneOf": [
+        { "$ref": "#/$defs/ModelRef" },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/ModelRef" }
+        }
+      ]
+    },
+
+    "MultipartEntry": {
+      "type": "object",
+      "required": ["apply"],
+      "properties": {
+        "when": { "type": "object", "additionalProperties": true },
+        "apply": { "$ref": "#/$defs/VariantValue" }
+      },
+      "additionalProperties": true
+    }
+  }
+}

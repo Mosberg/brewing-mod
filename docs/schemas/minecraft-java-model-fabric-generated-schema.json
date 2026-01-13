@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mosberg.github.io/schemas/minecraft-java-model-fabric-generated-schema.json",
+  "title": "Minecraft Java model JSON (Fabric datagen generated assets/*/models/**.json)",
+  "type": "object",
+
+  "fileMatch": [
+    "src/main/generated/assets/*/models/**/*.json",
+    "**/src/main/generated/assets/*/models/**/*.json",
+
+    "build/generated/**/assets/*/models/**/*.json",
+    "**/build/generated/**/assets/*/models/**/*.json"
+  ],
+
+  "anyOf": [{ "required": ["parent"] }, { "required": ["elements"] }],
+
+  "properties": {
+    "parent": { "$ref": "#/$defs/ResourceLocation" },
+    "ambientocclusion": { "type": "boolean" },
+    "gui_light": { "type": "string", "enum": ["front", "side"] },
+
+    "textures": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/ResourceLocation" }
+    },
+
+    "elements": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Element" }
+    },
+
+    "display": { "$ref": "#/$defs/Display" },
+
+    "overrides": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/Override" }
+    }
+  },
+
+  "additionalProperties": true,
+
+  "$defs": {
+    "ResourceLocation": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^([a-z0-9_.-]+:)?[a-z0-9_./-]+$"
+    },
+
+    "Vec3_0_16": {
+      "type": "array",
+      "items": { "type": "number", "minimum": 0, "maximum": 16 },
+      "minItems": 3,
+      "maxItems": 3
+    },
+
+    "Vec3": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 3,
+      "maxItems": 3
+    },
+
+    "Vec4_UV": {
+      "type": "array",
+      "items": { "type": "number", "minimum": 0, "maximum": 16 },
+      "minItems": 4,
+      "maxItems": 4
+    },
+
+    "Element": {
+      "type": "object",
+      "required": ["from", "to", "faces"],
+      "properties": {
+        "from": { "$ref": "#/$defs/Vec3_0_16" },
+        "to": { "$ref": "#/$defs/Vec3_0_16" },
+        "rotation": { "$ref": "#/$defs/ElementRotation" },
+        "shade": { "type": "boolean" },
+        "faces": { "$ref": "#/$defs/Faces" }
+      },
+      "additionalProperties": true
+    },
+
+    "ElementRotation": {
+      "type": "object",
+      "required": ["origin", "axis", "angle"],
+      "properties": {
+        "origin": { "$ref": "#/$defs/Vec3_0_16" },
+        "axis": { "type": "string", "enum": ["x", "y", "z"] },
+        "angle": { "type": "number", "enum": [-45, -22.5, 0, 22.5, 45] },
+        "rescale": { "type": "boolean" }
+      },
+      "additionalProperties": true
+    },
+
+    "Faces": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "down": { "$ref": "#/$defs/Face" },
+        "up": { "$ref": "#/$defs/Face" },
+        "north": { "$ref": "#/$defs/Face" },
+        "south": { "$ref": "#/$defs/Face" },
+        "west": { "$ref": "#/$defs/Face" },
+        "east": { "$ref": "#/$defs/Face" }
+      },
+      "additionalProperties": true
+    },
+
+    "Face": {
+      "type": "object",
+      "required": ["texture"],
+      "properties": {
+        "uv": { "$ref": "#/$defs/Vec4_UV" },
+        "texture": { "type": "string", "pattern": "^#.+$" },
+        "cullface": {
+          "type": "string",
+          "enum": ["down", "up", "north", "south", "west", "east"]
+        },
+        "rotation": { "type": "integer", "enum": [0, 90, 180, 270] },
+        "tintindex": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+
+    "Display": {
+      "type": "object",
+      "properties": {
+        "thirdperson_righthand": { "$ref": "#/$defs/DisplayTransform" },
+        "thirdperson_lefthand": { "$ref": "#/$defs/DisplayTransform" },
+        "firstperson_righthand": { "$ref": "#/$defs/DisplayTransform" },
+        "firstperson_lefthand": { "$ref": "#/$defs/DisplayTransform" },
+        "gui": { "$ref": "#/$defs/DisplayTransform" },
+        "head": { "$ref": "#/$defs/DisplayTransform" },
+        "ground": { "$ref": "#/$defs/DisplayTransform" },
+        "fixed": { "$ref": "#/$defs/DisplayTransform" }
+      },
+      "additionalProperties": true
+    },
+
+    "DisplayTransform": {
+      "type": "object",
+      "properties": {
+        "rotation": { "$ref": "#/$defs/Vec3" },
+        "translation": { "$ref": "#/$defs/Vec3" },
+        "scale": { "$ref": "#/$defs/Vec3" }
+      },
+      "additionalProperties": true
+    },
+
+    "Override": {
+      "type": "object",
+      "required": ["predicate", "model"],
+      "properties": {
+        "predicate": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "number" }
+        },
+        "model": { "$ref": "#/$defs/ResourceLocation" }
+      },
+      "additionalProperties": true
+    }
+  }
+}
