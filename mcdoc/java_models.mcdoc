@@ -67,7 +67,7 @@ struct JavaOverride {
   model: string,
 }
 
-/// Java blockstate JSON: assets/<ns>/blockstates/*.json
+/// Java blockstate JSON: assets/<ns>/blockstates/**/*.json
 struct JavaBlockstate {
   variants?: struct {
     [string]: JavaVariantValue,

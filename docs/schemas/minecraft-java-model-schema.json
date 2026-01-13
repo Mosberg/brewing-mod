@@ -3,7 +3,8 @@
   "$id": "https://mosberg.github.io/schemas/minecraft-java-model-schema.json",
   "title": "Minecraft Java Edition model JSON (assets/*/models/**.json)",
   "type": "object",
-  "required": ["format_version"],
+
+  "$comment": "Note: 'format_version' is not a vanilla Java model field; kept optional for custom pipelines.",
 
   "anyOf": [{ "required": ["parent"] }, { "required": ["elements"] }],
 
@@ -37,12 +38,6 @@
   },
 
   "additionalProperties": true,
-
-  "credit": {
-    "type": "string",
-    "minLength": 1,
-    "pattern": "^([a-z0-9_.-]+:)?[a-z0-9_./-]+$"
-  },
 
   "$defs": {
     "ResourceLocation": {
@@ -80,11 +75,8 @@
       "properties": {
         "from": { "$ref": "#/$defs/Vec3_0_16" },
         "to": { "$ref": "#/$defs/Vec3_0_16" },
-
         "rotation": { "$ref": "#/$defs/ElementRotation" },
-
         "shade": { "type": "boolean" },
-
         "faces": { "$ref": "#/$defs/Faces" }
       },
       "additionalProperties": true
@@ -121,20 +113,16 @@
       "required": ["texture"],
       "properties": {
         "uv": { "$ref": "#/$defs/Vec4_UV" },
-
         "texture": {
           "type": "string",
           "pattern": "^#.+$",
           "description": "Face textures are typically '#keys' that must be defined in the top-level 'textures' object."
         },
-
         "cullface": {
           "type": "string",
           "enum": ["down", "up", "north", "south", "west", "east"]
         },
-
         "rotation": { "type": "integer", "enum": [0, 90, 180, 270] },
-
         "tintindex": { "type": "integer", "minimum": 0 }
       },
       "additionalProperties": true
