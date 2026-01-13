@@ -1,7 +1,13 @@
 {
   "env": {
     "dataSource": "GitHub",
-    "dependencies": ["@vanilla-mcdoc"],
+    "dependencies": [
+      "@vanilla-mcdoc",
+      "@vanilla-mcmeta",
+      "@vanilla-loottables",
+      "@vanilla-recipes",
+      "@java_models"
+    ],
     "feature": {
       "codeActions": true,
       "colors": true,
