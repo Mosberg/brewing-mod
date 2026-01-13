@@ -1,8 +1,33 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "json.schemas": [
+      {
+        "fileMatch": ["**/src/main/resources/assets/*/models/**/*.json"],
+        "url": "./docs/schemas/minecraft-java-model-assets-schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/src/main/generated/assets/*/models/**/*.json",
+          "**/build/generated/**/assets/*/models/**/*.json"
+        ],
+        "url": "./docs/schemas/minecraft-java-model-fabric-generated-schema.json"
+      },
+      {
+        "fileMatch": ["**/src/main/resources/assets/*/blockstates/**/*.json"],
+        "url": "./docs/schemas/minecraft-java-blockstate-assets-schema.json"
+      },
+      {
+        "fileMatch": [
+          "**/src/main/generated/assets/*/blockstates/**/*.json",
+          "**/build/generated/**/assets/*/blockstates/**/*.json"
+        ],
+        "url": "./docs/schemas/minecraft-java-blockstate-fabric-generated-schema.json"
+      }
+    ]
+  }
 }

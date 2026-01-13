@@ -1,0 +1,91 @@
+/// Java model JSON: assets/<ns>/models/**/*.json
+struct JavaModel {
+  parent?: string,
+  ambientocclusion?: boolean,
+  gui_light?: ("front" | "side"),
+  textures?: struct {
+    [string]: string,
+  },
+  elements?: [JavaElement],
+  display?: JavaDisplay,
+  overrides?: [JavaOverride],
+}
+
+struct JavaElement {
+  from: [float, float, float],
+  to: [float, float, float],
+  rotation?: JavaElementRotation,
+  shade?: boolean,
+  faces: JavaFaces,
+}
+
+struct JavaElementRotation {
+  origin: [float, float, float],
+  axis: ("x" | "y" | "z"),
+  angle: (-45 | -22.5 | 0 | 22.5 | 45),
+  rescale?: boolean,
+}
+
+struct JavaFaces {
+  down?: JavaFace,
+  up?: JavaFace,
+  north?: JavaFace,
+  south?: JavaFace,
+  west?: JavaFace,
+  east?: JavaFace,
+}
+
+struct JavaFace {
+  uv?: [float, float, float, float],
+  texture: string,
+  cullface?: ("down" | "up" | "north" | "south" | "west" | "east"),
+  rotation?: (0 | 90 | 180 | 270),
+  tintindex?: int @ 0..,
+}
+
+struct JavaDisplay {
+  thirdperson_righthand?: JavaDisplayTransform,
+  thirdperson_lefthand?: JavaDisplayTransform,
+  firstperson_righthand?: JavaDisplayTransform,
+  firstperson_lefthand?: JavaDisplayTransform,
+  gui?: JavaDisplayTransform,
+  head?: JavaDisplayTransform,
+  ground?: JavaDisplayTransform,
+  fixed?: JavaDisplayTransform,
+}
+
+struct JavaDisplayTransform {
+  rotation?: [float, float, float],
+  translation?: [float, float, float],
+  scale?: [float, float, float],
+}
+
+struct JavaOverride {
+  predicate: struct {
+    [string]: float,
+  },
+  model: string,
+}
+
+/// Java blockstate JSON: assets/<ns>/blockstates/*.json
+struct JavaBlockstate {
+  variants?: struct {
+    [string]: JavaVariantValue,
+  },
+  multipart?: [JavaMultipartEntry],
+}
+
+type JavaVariantValue = (JavaModelRef | [JavaModelRef])
+
+struct JavaModelRef {
+  model: string,
+  x?: (0 | 90 | 180 | 270),
+  y?: (0 | 90 | 180 | 270),
+  uvlock?: boolean,
+  weight?: int @ 1..,
+}
+
+struct JavaMultipartEntry {
+  when?: any,
+  apply: JavaVariantValue,
+}
