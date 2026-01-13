@@ -1,6 +1,6 @@
 {
   "format_version": "1.21.11",
-  "credit": "Made with Blockbench",
+  "credit": "Made by Mosberg with Blockbench",
   "texture_size": [64, 64],
   "textures": {
     "0": "brewing:block/containers/copper_keg",
