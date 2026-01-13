@@ -30,35 +30,28 @@
     "blockStateCommaSpacing": { "before": 0, "after": 1 },
     "blockStateEqualSpacing": { "before": 0, "after": 0 },
     "blockStateTrailingComma": false,
-
     "eol": "auto",
-
     "nbtArrayBracketSpacing": { "inside": 0 },
     "nbtArrayCommaSpacing": { "before": 0, "after": 1 },
     "nbtArraySemicolonSpacing": { "after": 1 },
     "nbtArrayTrailingComma": false,
     "nbtByteSuffix": "b",
-
     "nbtCompoundBracketSpacing": { "inside": 0 },
     "nbtCompoundColonSpacing": { "before": 0, "after": 1 },
     "nbtCompoundCommaSpacing": { "before": 0, "after": 1 },
     "nbtCompoundTrailingComma": false,
-
     "nbtDoubleOmitSuffix": false,
     "nbtDoubleSuffix": "d",
     "nbtFloatSuffix": "f",
-    "nbtLongSuffix": "L",
-    "nbtShortSuffix": "s",
-
     "nbtListBracketSpacing": { "inside": 0 },
     "nbtListCommaSpacing": { "before": 0, "after": 1 },
     "nbtListTrailingComma": false,
-
+    "nbtLongSuffix": "L",
+    "nbtShortSuffix": "s",
     "selectorBracketSpacing": { "inside": 0 },
     "selectorCommaSpacing": { "before": 0, "after": 1 },
     "selectorEqualSpacing": { "before": 0, "after": 0 },
     "selectorTrailingComma": false,
-
     "timeOmitTickUnit": false
   },
   "lint": {
@@ -85,7 +78,11 @@
     "nbtListLengthCheck": null,
     "nbtTypeCheck": "loosely",
 
-    "undeclaredSymbol": [["error", "VALUE"]]
+    "undeclaredSymbol": [
+      {
+        "then": { "declare": "block" }
+      }
+    ]
   },
   "snippet": {
     "executeIfScoreSet": "execute if score ${1:score_holder} ${2:objective} = ${1:score_holder} ${2:objective} $0",
