@@ -3,6 +3,7 @@
   "$id": "https://mosberg.github.io/schemas/minecraft-java-model-fabric-generated-schema.json",
   "title": "Minecraft Java model JSON (Fabric datagen generated assets/*/models/**.json)",
   "type": "object",
+  "required": ["format_version"],
 
   "fileMatch": [
     "src/main/generated/assets/*/models/**/*.json",
@@ -18,6 +19,7 @@
     "parent": { "$ref": "#/$defs/ResourceLocation" },
     "ambientocclusion": { "type": "boolean" },
     "gui_light": { "type": "string", "enum": ["front", "side"] },
+    "format_version": { "type": "string", "minLength": 1 },
 
     "textures": {
       "type": "object",
@@ -38,6 +40,12 @@
   },
 
   "additionalProperties": true,
+
+  "credit": {
+    "type": "string",
+    "minLength": 1,
+    "pattern": "^([a-z0-9_.-]+:)?[a-z0-9_./-]+$"
+  },
 
   "$defs": {
     "ResourceLocation": {
